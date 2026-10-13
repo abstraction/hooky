@@ -93,6 +93,14 @@ install_herdr_hook() {
   cp -f "$SCRIPT_DIR/sync-herdr.sh" "$HOOKS_DIR/herdr.sh"
   chmod +x "$HOOKS_DIR/herdr.sh"
   log_ok "Herdr hook installed and made executable."
+
+  # Immediately synchronize Herdr configuration if config exists
+  local herdr_cfg="${HERDR_CONFIG:-$HOME/.config/herdr/config.toml}"
+  if [[ -f "$herdr_cfg" ]]; then
+    log_info "Synchronizing Herdr configuration..."
+    "$HOOKS_DIR/herdr.sh" || log_warn "Initial Herdr synchronization returned non-zero status."
+    log_ok "Herdr configuration synchronized."
+  fi
 }
 
 if (( HOOK_ONLY )); then
@@ -126,13 +134,28 @@ install_theme_package() {
 # ------------------------------------------------------------------------------
 patch_kitty_compositing() {
   if [[ ! -f "$KITTY_CONF" ]]; then
-    log_warn "Kitty configuration not found at $KITTY_CONF; skipping compositing patch."
-    return 0
+    if command -v kitty >/dev/null 2>&1 || [[ -d "$(dirname "$KITTY_CONF")" ]]; then
+      log_info "Initializing Kitty configuration at $KITTY_CONF with platform compositing..."
+      if (( DRY_RUN )); then
+        log_info "[DRY-RUN] Would create $KITTY_CONF with text_composition_strategy platform"
+        return 0
+      fi
+      mkdir -p "$(dirname "$KITTY_CONF")"
+      cat <<EOF > "$KITTY_CONF"
+# Ergonomic typography: eliminate dark-mode alpha stroke erosion
+text_composition_strategy platform
+EOF
+      log_ok "Created $KITTY_CONF with 'text_composition_strategy platform'."
+      return 0
+    else
+      log_warn "Kitty configuration not found at $KITTY_CONF; skipping compositing patch."
+      return 0
+    fi
   fi
 
   log_info "Inspecting Kitty font compositing in $KITTY_CONF..."
 
-  if grep -q "^text_composition_strategy[[:space:]]\+platform" "$KITTY_CONF"; then
+  if grep -q "^[[:space:]]*text_composition_strategy[[:space:]]\+platform" "$KITTY_CONF"; then
     log_ok "Kitty already configured with 'text_composition_strategy platform'."
     return 0
   fi
@@ -147,8 +170,8 @@ patch_kitty_compositing() {
   cp -a "$KITTY_CONF" "$backup"
   log_info "Created backup: $backup"
 
-  if grep -q "^text_composition_strategy" "$KITTY_CONF"; then
-    sed -i 's/^text_composition_strategy.*/text_composition_strategy platform/' "$KITTY_CONF"
+  if grep -q "^[[:space:]]*text_composition_strategy" "$KITTY_CONF"; then
+    sed -i 's/^[[:space:]]*text_composition_strategy.*/text_composition_strategy platform/' "$KITTY_CONF"
     log_ok "Updated text_composition_strategy to 'platform'."
   else
     cat <<EOF >> "$KITTY_CONF"

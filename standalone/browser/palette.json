@@ -34,7 +34,8 @@
       "hex": "#cfc6b8",
       "rgb": [207, 198, 184],
       "oklch": { "l": 0.8300, "c": 0.0217, "h": 79.1 },
-      "apca_lc": 74.5,
+      "apca_lc": 69.6,
+      "apca_lc_nominal": 74.5,
       "role": "Primary reading text, code tokens (warm cream)"
     },
     "bright_foreground": {

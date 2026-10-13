@@ -136,8 +136,20 @@ def wcag_contrast_ratio(txt_hex: str, bg_hex: str) -> float:
 
 
 def parse_colors_toml(path: str) -> Dict[str, str]:
-    """Parse colors.toml file into key-value hex dictionary."""
+    """Parse colors.toml file into key-value hex dictionary using tomllib with fallback."""
     colors = {}
+    try:
+        import tomllib
+        with open(path, "rb") as f:
+            data = tomllib.load(f)
+            for k, v in data.items():
+                if isinstance(v, str) and v.startswith("#") and len(v) in (4, 7):
+                    colors[k] = v
+        if colors:
+            return colors
+    except Exception:
+        pass
+
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
@@ -147,7 +159,6 @@ def parse_colors_toml(path: str) -> Dict[str, str]:
                 k, v = line.split("=", 1)
                 k = k.strip().strip('"').strip("'")
                 v = v.strip()
-                # If quoted string, extract quoted content
                 if (v.startswith('"') and '"' in v[1:]) or (v.startswith("'") and "'" in v[1:]):
                     quote_char = v[0]
                     v = v[1:].split(quote_char, 1)[0]
@@ -162,97 +173,179 @@ def evaluate_guardrails(colors: Dict[str, str]) -> List[Tuple[str, bool, str]]:
     """
     Evaluate physiological and mathematical guardrails from research paper:
     Returns list of (guardrail_name, passed, explanation).
+    Fails explicitly if any required semantic token is missing.
     """
     results = []
 
     # 1. Background Halation Floor
-    bg_hex = colors.get("background", "#191716")
-    bg_rgb = hex_to_rgb(bg_hex)
-    bg_l, bg_c, bg_h = rgb_to_oklch(*bg_rgb)
-    bg_pass = 0.15 <= bg_l <= 0.22
-    results.append((
-        "Halation Floor (Background L)",
-        bg_pass,
-        f"L = {bg_l:.4f} (target: 0.15 <= L <= 0.22, non-zero to suppress halation)"
-    ))
+    if "background" not in colors:
+        results.append((
+            "Halation Floor (Background L)",
+            False,
+            "Missing required token 'background' in colors.toml"
+        ))
+        bg_hex = None
+        bg_l = 0.0
+    else:
+        bg_hex = colors["background"]
+        bg_rgb = hex_to_rgb(bg_hex)
+        bg_l, bg_c, bg_h = rgb_to_oklch(*bg_rgb)
+        bg_pass = 0.15 <= bg_l <= 0.22
+        results.append((
+            "Halation Floor (Background L)",
+            bg_pass,
+            f"L = {bg_l:.4f} (target: 0.15 <= L <= 0.22, non-zero to suppress halation)"
+        ))
 
     # 2. Stepped Elevation (+0.02 to +0.05 L)
-    lighter_hex = colors.get("lighter_background", "#221f1d")
-    lighter_l, _, _ = rgb_to_oklch(*hex_to_rgb(lighter_hex))
-    delta_l = lighter_l - bg_l
-    elev_pass = 0.020 <= delta_l <= 0.055
-    results.append((
-        "Z-Index Elevation (lighter_background)",
-        elev_pass,
-        f"ΔL = +{delta_l:.4f} (target: +0.020 <= ΔL <= +0.055, shadow-free depth)"
-    ))
+    if "lighter_background" not in colors:
+        results.append((
+            "Z-Index Elevation (lighter_background)",
+            False,
+            "Missing required token 'lighter_background' in colors.toml"
+        ))
+    elif bg_hex is None:
+        results.append((
+            "Z-Index Elevation (lighter_background)",
+            False,
+            "Cannot evaluate elevation: missing base 'background' token"
+        ))
+    else:
+        lighter_hex = colors["lighter_background"]
+        lighter_l, _, _ = rgb_to_oklch(*hex_to_rgb(lighter_hex))
+        delta_l = lighter_l - bg_l
+        elev_pass = 0.020 <= delta_l <= 0.055
+        results.append((
+            "Z-Index Elevation (lighter_background)",
+            elev_pass,
+            f"ΔL = +{delta_l:.4f} (target: +0.020 <= ΔL <= +0.055, shadow-free depth)"
+        ))
 
     # 3. Recessed Panels (dark_background)
-    dark_hex = colors.get("dark_background", "#141312")
-    dark_l, _, _ = rgb_to_oklch(*hex_to_rgb(dark_hex))
-    recess_pass = dark_l <= bg_l and dark_l >= 0.12
-    results.append((
-        "Recessed Sidebar (dark_background)",
-        recess_pass,
-        f"L = {dark_l:.4f} <= base L ({bg_l:.4f}) and >= 0.12 floor"
-    ))
+    if "dark_background" not in colors:
+        results.append((
+            "Recessed Sidebar (dark_background)",
+            False,
+            "Missing required token 'dark_background' in colors.toml"
+        ))
+    elif bg_hex is None:
+        results.append((
+            "Recessed Sidebar (dark_background)",
+            False,
+            "Cannot evaluate recessed panels: missing base 'background' token"
+        ))
+    else:
+        dark_hex = colors["dark_background"]
+        dark_l, _, _ = rgb_to_oklch(*hex_to_rgb(dark_hex))
+        recess_pass = dark_l <= bg_l and dark_l >= 0.12
+        results.append((
+            "Recessed Sidebar (dark_background)",
+            recess_pass,
+            f"L = {dark_l:.4f} <= base L ({bg_l:.4f}) and >= 0.12 floor"
+        ))
 
     # 4. Foreground Readability & Warmth
-    fg_hex = colors.get("foreground", "#cfc6b8")
-    fg_l, fg_c, fg_h = rgb_to_oklch(*hex_to_rgb(fg_hex))
-    fg_apca = apca_w3_contrast(fg_hex, bg_hex)
-    fg_pass = fg_apca >= 65.0 and fg_c <= 0.035
-    results.append((
-        "Primary Text Contrast & Warmth (foreground)",
-        fg_pass,
-        f"APCA Lc = {fg_apca:.1f} (nominal: 74.5, target >= 65.0 clamped), Chroma C = {fg_c:.4f} (target <= 0.035)"
-    ))
+    if "foreground" not in colors:
+        results.append((
+            "Primary Text Contrast & Warmth (foreground)",
+            False,
+            "Missing required token 'foreground' in colors.toml"
+        ))
+    elif bg_hex is None:
+        results.append((
+            "Primary Text Contrast & Warmth (foreground)",
+            False,
+            "Cannot evaluate text contrast: missing base 'background' token"
+        ))
+    else:
+        fg_hex = colors["foreground"]
+        fg_l, fg_c, fg_h = rgb_to_oklch(*hex_to_rgb(fg_hex))
+        fg_apca = apca_w3_contrast(fg_hex, bg_hex)
+        fg_pass = fg_apca >= 65.0 and fg_c <= 0.035
+        results.append((
+            "Primary Text Contrast & Warmth (foreground)",
+            fg_pass,
+            f"APCA Lc = {fg_apca:.1f} (target >= 65.0 clamped, ~74.5 nominal), Chroma C = {fg_c:.4f} (target <= 0.035)"
+        ))
 
     # 5. Glare Suppression (bright_foreground == foreground)
-    bright_fg_hex = colors.get("bright_foreground", fg_hex)
-    glare_pass = bright_fg_hex.lower() == fg_hex.lower()
-    results.append((
-        "Selection Glare Neutralization (bright_fg)",
-        glare_pass,
-        f"bright_foreground ({bright_fg_hex}) matches foreground ({fg_hex}) to eliminate stark flashes"
-    ))
+    if "bright_foreground" not in colors or "foreground" not in colors:
+        results.append((
+            "Selection Glare Neutralization (bright_fg)",
+            False,
+            "Missing required token 'bright_foreground' or 'foreground' in colors.toml"
+        ))
+    else:
+        bright_fg_hex = colors["bright_foreground"]
+        fg_hex = colors["foreground"]
+        glare_pass = bright_fg_hex.lower() == fg_hex.lower()
+        results.append((
+            "Selection Glare Neutralization (bright_fg)",
+            glare_pass,
+            f"bright_foreground ({bright_fg_hex}) matches foreground ({fg_hex}) to eliminate stark flashes"
+            if glare_pass else
+            f"bright_foreground ({bright_fg_hex}) differs from foreground ({fg_hex}), inducing selection glare"
+        ))
 
     # 6. Accommodative Lag & Primary Accent
-    accent_hex = colors.get("accent", "#e59458")
-    accent_l, accent_c, accent_h = rgb_to_oklch(*hex_to_rgb(accent_hex))
-    accent_pass = 20.0 <= accent_h <= 65.0
-    results.append((
-        "Accommodative Focus Lag (accent Hue)",
-        accent_pass,
-        f"Hue H = {accent_h:.1f}° (target 20° <= H <= 65° warm terracotta/amber for 0.18 D lag)"
-    ))
+    if "accent" not in colors:
+        results.append((
+            "Accommodative Focus Lag (accent Hue)",
+            False,
+            "Missing required token 'accent' in colors.toml"
+        ))
+    else:
+        accent_hex = colors["accent"]
+        accent_l, accent_c, accent_h = rgb_to_oklch(*hex_to_rgb(accent_hex))
+        accent_pass = 20.0 <= accent_h <= 65.0
+        results.append((
+            "Accommodative Focus Lag (accent Hue)",
+            accent_pass,
+            f"Hue H = {accent_h:.1f}° (target 20° <= H <= 65° warm terracotta/amber for 0.18 D lag)"
+        ))
 
     # 7. Blue Light Defocus (LCA Neutralization)
-    blue_hex = colors.get("blue", "#6eb3c2")
-    blue_l, blue_c, blue_h = rgb_to_oklch(*hex_to_rgb(blue_hex))
-    # Must meet at least one of:
-    # 1. Cyan/spruce shift: 180 <= H <= 220
-    # 2. Desaturated slate: C < 0.10
-    # 3. High lightness: L > 0.70
-    blue_cyan_shift = 180.0 <= blue_h <= 225.0
-    blue_low_chroma = blue_c < 0.10
-    blue_high_l = blue_l > 0.70
-    blue_pass = blue_cyan_shift or blue_low_chroma or blue_high_l
-    results.append((
-        "Longitudinal Chromatic Aberration (blue)",
-        blue_pass,
-        f"H = {blue_h:.1f}°, C = {blue_c:.4f}, L = {blue_l:.4f} (Neutralizes 0.61 D defocus)"
-    ))
+    if "blue" not in colors:
+        results.append((
+            "Longitudinal Chromatic Aberration (blue)",
+            False,
+            "Missing required token 'blue' in colors.toml"
+        ))
+    else:
+        blue_hex = colors["blue"]
+        blue_l, blue_c, blue_h = rgb_to_oklch(*hex_to_rgb(blue_hex))
+        blue_cyan_shift = 180.0 <= blue_h <= 225.0
+        blue_low_chroma = blue_c < 0.10
+        blue_high_l = blue_l > 0.70
+        blue_pass = blue_cyan_shift or blue_low_chroma or blue_high_l
+        results.append((
+            "Longitudinal Chromatic Aberration (blue)",
+            blue_pass,
+            f"H = {blue_h:.1f}°, C = {blue_c:.4f}, L = {blue_l:.4f} (Neutralizes 0.61 D defocus)"
+        ))
 
     # 8. Muted Secondary Text Contrast
-    muted_hex = colors.get("muted", "#9b948a")
-    muted_apca = apca_w3_contrast(muted_hex, bg_hex)
-    muted_pass = muted_apca >= 35.0
-    results.append((
-        "Muted Secondary Readability (muted)",
-        muted_pass,
-        f"APCA Lc = {muted_apca:.1f} (target >= 35.0 for comments & line numbers)"
-    ))
+    if "muted" not in colors:
+        results.append((
+            "Muted Secondary Readability (muted)",
+            False,
+            "Missing required token 'muted' in colors.toml"
+        ))
+    elif bg_hex is None:
+        results.append((
+            "Muted Secondary Readability (muted)",
+            False,
+            "Cannot evaluate secondary text: missing base 'background' token"
+        ))
+    else:
+        muted_hex = colors["muted"]
+        muted_apca = apca_w3_contrast(muted_hex, bg_hex)
+        muted_pass = muted_apca >= 35.0
+        results.append((
+            "Muted Secondary Readability (muted)",
+            muted_pass,
+            f"APCA Lc = {muted_apca:.1f} (target >= 35.0 for comments & line numbers)"
+        ))
 
     return results
 

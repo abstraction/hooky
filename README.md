@@ -28,7 +28,7 @@ Standard "dark mode" implementations typically invert RGB values or use `#000000
 
 ### C. APCA Perceptual Contrast vs. WCAG 2.1
 - **Mechanism**: WCAG 2.1 uses a symmetric relative luminance formula that penalizes dark mode and forces text luminance excessively high, aggravating halation.
-- **Terra Solution**: Evaluated using the **Advanced Perceptual Contrast Algorithm (APCA-W3 v0.98G)**. Primary foreground text (`#cfc6b8`) targets **$Lc \approx 74.5$**, providing crisp letterform clarity for 13–15px monospace fonts without retinal glare.
+- **Terra Solution**: Evaluated using the **Advanced Perceptual Contrast Algorithm (APCA-W3 v0.98G)**. Primary foreground text (`#cfc6b8`) achieves **$Lc = 69.6$** clamped (**$74.5$** nominal), providing crisp letterform clarity for 13–15px monospace fonts without retinal glare.
 
 ### D. Glare Neutralization & Shadow-Free Elevation
 - **Selection Glare**: `bright_foreground` is strictly mapped to `foreground` (`#cfc6b8`), eliminating blinding white flashes during cursor movements and block selections.
@@ -46,8 +46,8 @@ All values verified via `scripts/verify-colors.py`:
 | `lighter_background` | `#221f1d` | `0.242, 0.006, 56.1°` | 0.0 | Elevated surfaces, menus, popups (+0.035 $L$) |
 | `dark_background` | `#141312` | `0.187, 0.003, 67.7°` | 0.0 | Recessed sidebars, status bars, window borders |
 | `selection` | `#3a3430` | `0.330, 0.011, 56.0°` | — | Text selection & active table rows |
-| `foreground` | `#cfc6b8` | `0.830, 0.022, 79.1°` | **74.5** | Primary text & code tokens (warm cream) |
-| `bright_foreground` | `#cfc6b8` | `0.830, 0.022, 79.1°` | **74.5** | Aligned with foreground to suppress selection glare |
+| `foreground` | `#cfc6b8` | `0.830, 0.022, 79.1°` | **69.6** (74.5 nom) | Primary text & code tokens (warm cream) |
+| `bright_foreground` | `#cfc6b8` | `0.830, 0.022, 79.1°` | **69.6** (74.5 nom) | Aligned with foreground to suppress selection glare |
 | `light_foreground` | `#b5ada3` | `0.746, 0.016, 76.5°` | 55.4 | Secondary text & UI labels |
 | `muted` | `#9b948a` | `0.670, 0.017, 77.0°` | **42.5** | Comments, line numbers, inactive controls |
 | `dark_foreground` | `#7d766d` | `0.569, 0.016, 74.3°` | 28.3 | Faint delimiters & disabled elements |
@@ -125,6 +125,15 @@ Two integration options are provided:
    ```
 2. **Aether.nvim Integration**: Use `standalone/neovim/aether.lua` in your LazyVim / lazy.nvim plugin configuration.
 
+### Hyprland
+Configure window borders and peripheral focus dimming:
+- **Hyprland 0.56+ (Lua)**: Merge `standalone/hyprland/looknfeel.lua` into `~/.config/hypr/looknfeel.lua`.
+- **Hyprland Classic (.conf)**: Source `standalone/hyprland/hyprland.conf` in `~/.config/hypr/hyprland.conf`:
+  ```conf
+  source = path/to/hooky/standalone/hyprland/hyprland.conf
+  ```
+  Applies active border `#e59458`, inactive border `#2a2725`, `dim_inactive = true`, and `dim_strength = 0.12`.
+
 ### Tmux
 Source the theme in `~/.tmux.conf`:
 ```tmux
@@ -153,6 +162,9 @@ Import `standalone/darkreader/darkreader.json` in the Dark Reader extension sett
 
 ### Herdr Multiplexer Boundary
 Omarchy compiles Kitty, Foot, Neovim, and Quickshell automatically on theme changes, but lacks a native template for **Herdr** (`/usr/bin/herdr`). An unconfigured Herdr instance renders bright cyan tab borders (`#6cb0bf`), creating a 0.33 D ciliary mismatch against the amber Hyprland active border. `scripts/sync-herdr.sh` intercepts `omarchy-hook theme-set`, reads semantic tokens via `omarchy-theme-color`, patches `~/.config/herdr/config.toml`, and sends a live reload command to the running Herdr server.
+
+### Hyprland Inactive Window Dimming
+To eliminate peripheral visual noise in multi-monitor and tiled layouts, Hyprland window focus is reinforced via `dim_inactive = true` with `dim_strength = 0.12`. This subtle 12% luminance reduction on inactive windows lowers ocular saccade distraction while maintaining legibility of background reference documents.
 
 ### Kitty Font Compositing
 In dark mode, Kitty's default setting `text_composition_strategy legacy` applies non-linear gamma approximation that erodes glyph alpha boundaries by up to 48%, causing thin or spindly letterforms. Setting `text_composition_strategy platform` restores true linear anti-aliasing and solid glyph bodies.

@@ -32,38 +32,104 @@ DARK_BG=$(get_color dark_background "#141312")
 SELECTION=$(get_color selection "#3a3430")
 MUTED=$(get_color muted "#9b948a")
 
-# Ensure [theme.custom] section exists
-if ! grep -q '^\[theme\.custom\]' "$HERDR_CONFIG"; then
-  cat <<EOF >> "$HERDR_CONFIG"
+# Update Herdr configuration with section-aware parser
+python3 - "$HERDR_CONFIG" "$ACCENT" "$BG" "$DARK_BG" "$SELECTION" "$MUTED" <<'PYEOF'
+import sys, re
 
-[theme.custom]
-panel_bg = "$BG"
-sidebar_bg = "$DARK_BG"
-active_row_bg = "$SELECTION"
-surface_dim = "$MUTED"
-selection_bg = "$SELECTION"
-accent = "$ACCENT"
-EOF
-else
-  # Replace existing keys or append missing ones
-  for pair in "panel_bg:$BG" "sidebar_bg:$DARK_BG" "active_row_bg:$SELECTION" "surface_dim:$MUTED" "selection_bg:$SELECTION" "accent:$ACCENT"; do
-    key="${pair%%:*}"
-    val="${pair#*:}"
-    if grep -q "^${key} = " "$HERDR_CONFIG"; then
-      sed -i "s|^${key} = .*|${key} = \"${val}\"|" "$HERDR_CONFIG"
-    else
-      # Append under [theme.custom]
-      sed -i "/^\[theme\.custom\]/a ${key} = \"${val}\"" "$HERDR_CONFIG"
-    fi
-  done
-fi
+config_path = sys.argv[1]
+accent = sys.argv[2]
+bg = sys.argv[3]
+dark_bg = sys.argv[4]
+selection = sys.argv[5]
+muted = sys.argv[6]
 
-# Also ensure top-level ui accent matches if present
-if grep -q '^\[ui\]' "$HERDR_CONFIG"; then
-  if grep -q '^accent = ' "$HERDR_CONFIG"; then
-    sed -i "s|^accent = .*|accent = \"$ACCENT\"|" "$HERDR_CONFIG"
-  fi
-fi
+custom_keys = {
+    "panel_bg": bg,
+    "sidebar_bg": dark_bg,
+    "active_row_bg": selection,
+    "surface_dim": muted,
+    "selection_bg": selection,
+    "accent": accent,
+}
+
+try:
+    with open(config_path, "r", encoding="utf-8") as f:
+        lines = f.read().splitlines()
+except Exception:
+    sys.exit(0)
+
+new_lines = []
+current_section = None
+custom_keys_seen = set()
+has_theme_custom_section = any(re.match(r"^\s*\[theme\.custom\]", l) for l in lines)
+has_ui_section = any(re.match(r"^\s*\[ui\]", l) for l in lines)
+ui_accent_seen = False
+
+i = 0
+while i < len(lines):
+    line = lines[i]
+    m = re.match(r"^\s*\[([^\]]+)\]", line)
+    if m:
+        if current_section == "theme.custom":
+            for k, v in custom_keys.items():
+                if k not in custom_keys_seen:
+                    new_lines.append(f'{k} = "{v}"')
+                    custom_keys_seen.add(k)
+        elif current_section == "ui" and not ui_accent_seen:
+            new_lines.append(f'accent = "{accent}"')
+            ui_accent_seen = True
+
+        current_section = m.group(1).strip()
+        new_lines.append(line)
+        i += 1
+        continue
+
+    if current_section == "theme.custom":
+        km = re.match(r"^(\s*)([a-zA-Z0-9_]+)(\s*=.*)$", line)
+        if km:
+            indent, k = km.group(1), km.group(2)
+            if k in custom_keys:
+                new_lines.append(f'{indent}{k} = "{custom_keys[k]}"')
+                custom_keys_seen.add(k)
+                i += 1
+                continue
+    elif current_section == "ui":
+        km = re.match(r"^(\s*)(accent)(\s*=.*)$", line)
+        if km:
+            indent = km.group(1)
+            new_lines.append(f'{indent}accent = "{accent}"')
+            ui_accent_seen = True
+            i += 1
+            continue
+
+    new_lines.append(line)
+    i += 1
+
+if current_section == "theme.custom":
+    for k, v in custom_keys.items():
+        if k not in custom_keys_seen:
+            new_lines.append(f'{k} = "{v}"')
+            custom_keys_seen.add(k)
+elif current_section == "ui" and not ui_accent_seen:
+    new_lines.append(f'accent = "{accent}"')
+    ui_accent_seen = True
+
+if not has_theme_custom_section:
+    if new_lines and new_lines[-1].strip() != "":
+        new_lines.append("")
+    new_lines.append("[theme.custom]")
+    for k, v in custom_keys.items():
+        new_lines.append(f'{k} = "{v}"')
+
+if not has_ui_section:
+    if new_lines and new_lines[-1].strip() != "":
+        new_lines.append("")
+    new_lines.append("[ui]")
+    new_lines.append(f'accent = "{accent}"')
+
+with open(config_path, "w", encoding="utf-8") as f:
+    f.write("\n".join(new_lines) + "\n")
+PYEOF
 
 # Reload herdr server if running
 if command -v herdr >/dev/null 2>&1; then
