@@ -1,0 +1,110 @@
+{
+  "name": "Terra (Hooky)",
+  "author": "Seren",
+  "description": "Ergonomic color system engineered for extreme-duration computing",
+  "type": "dark",
+  "surfaces": {
+    "background": {
+      "hex": "#191716",
+      "rgb": [25, 23, 22],
+      "oklch": { "l": 0.2065, "c": 0.0037, "h": 48.5 },
+      "role": "Main canvas and terminal background (safe halation floor)"
+    },
+    "lighter_background": {
+      "hex": "#221f1d",
+      "rgb": [34, 31, 29],
+      "oklch": { "l": 0.2419, "c": 0.0051, "h": 50.1 },
+      "role": "Elevated popups, menus, modals (+0.035 L depth)"
+    },
+    "dark_background": {
+      "hex": "#141312",
+      "rgb": [20, 19, 18],
+      "oklch": { "l": 0.1783, "c": 0.0028, "h": 48.5 },
+      "role": "Recessed sidebars, status bars, scrims"
+    },
+    "selection": {
+      "hex": "#3a3430",
+      "rgb": [58, 52, 48],
+      "oklch": { "l": 0.3168, "c": 0.0094, "h": 61.2 },
+      "role": "Text selections and active row highlights"
+    }
+  },
+  "typography": {
+    "foreground": {
+      "hex": "#cfc6b8",
+      "rgb": [207, 198, 184],
+      "oklch": { "l": 0.8300, "c": 0.0217, "h": 79.1 },
+      "apca_lc": 74.5,
+      "role": "Primary reading text, code tokens (warm cream)"
+    },
+    "bright_foreground": {
+      "hex": "#cfc6b8",
+      "rgb": [207, 198, 184],
+      "oklch": { "l": 0.8300, "c": 0.0217, "h": 79.1 },
+      "role": "Selection/cursor text (aligned to foreground to kill white glare)"
+    },
+    "light_foreground": {
+      "hex": "#b5ada3",
+      "rgb": [181, 173, 163],
+      "oklch": { "l": 0.7456, "c": 0.0163, "h": 76.5 },
+      "role": "Secondary UI labels, active delimiters"
+    },
+    "muted": {
+      "hex": "#9b948a",
+      "rgb": [155, 148, 138],
+      "oklch": { "l": 0.6558, "c": 0.0149, "h": 74.2 },
+      "apca_lc": 42.5,
+      "role": "Comments, line numbers, inactive controls"
+    },
+    "dark_foreground": {
+      "hex": "#7d766d",
+      "rgb": [125, 118, 109],
+      "oklch": { "l": 0.5475, "c": 0.0142, "h": 75.8 },
+      "role": "Faint guides and disabled elements"
+    }
+  },
+  "accents": {
+    "accent": {
+      "hex": "#e59458",
+      "rgb": [229, 148, 88],
+      "oklch": { "l": 0.7370, "c": 0.1239, "h": 55.9 },
+      "role": "Terracotta amber primary focus (0.18 D accommodative lag)"
+    },
+    "blue": {
+      "hex": "#6eb3c2",
+      "rgb": [110, 179, 194],
+      "oklch": { "l": 0.7265, "c": 0.0729, "h": 213.1 },
+      "role": "Slate spruce cyan (low chroma C < 0.10, zero LCA lag)"
+    },
+    "green": {
+      "hex": "#a3b26c",
+      "rgb": [163, 178, 108],
+      "oklch": { "l": 0.7301, "c": 0.1010, "h": 118.4 },
+      "role": "Muted moss green (strings and success states)"
+    },
+    "yellow": {
+      "hex": "#d8a657",
+      "rgb": [216, 166, 87],
+      "oklch": { "l": 0.7428, "c": 0.1130, "h": 77.2 },
+      "role": "Warm ochre gold (types and warnings)"
+    },
+    "red": {
+      "hex": "#dc7468",
+      "rgb": [220, 116, 104],
+      "oklch": { "l": 0.6747, "c": 0.1320, "h": 27.9 },
+      "role": "Muted rust brick red (errors and urgent cues)"
+    },
+    "cyan": {
+      "hex": "#88b29e",
+      "rgb": [136, 178, 158],
+      "oklch": { "l": 0.7248, "c": 0.0558, "h": 158.4 },
+      "role": "Desaturated sage cyan (operators and tags)"
+    },
+    "magenta": {
+      "hex": "#cc8292",
+      "rgb": [204, 130, 146],
+      "oklch": { "l": 0.6780, "c": 0.1030, "h": 11.2 },
+      "role": "Muted dusty rose (keywords and control flow)"
+    }
+  }
+}

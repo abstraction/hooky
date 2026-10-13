@@ -1,0 +1,50 @@
+# Terra (Hooky) - Ergonomic Color Scheme for Alacritty
+# https://github.com/seren/hooky
+
+[colors.primary]
+background = "#191716"
+foreground = "#cfc6b8"
+
+[colors.cursor]
+text = "#191716"
+cursor = "#cfc6b8"
+
+[colors.vi_mode_cursor]
+text = "#191716"
+cursor = "#cfc6b8"
+
+[colors.search.matches]
+foreground = "#191716"
+background = "#d8a657"
+
+[colors.search.focused_match]
+foreground = "#191716"
+background = "#dc7468"
+
+[colors.footer_bar]
+foreground = "#191716"
+background = "#cfc6b8"
+
+[colors.selection]
+text = "#cfc6b8"
+background = "#3a3430"
+
+[colors.normal]
+black   = "#191716"
+red     = "#dc7468"
+green   = "#a3b26c"
+yellow  = "#d8a657"
+blue    = "#6eb3c2"
+magenta = "#cc8292"
+cyan    = "#88b29e"
+white   = "#cfc6b8"
+
+[colors.bright]
+black   = "#9b948a"
+red     = "#dc7468"
+green   = "#a3b26c"
+yellow  = "#d8a657"
+blue    = "#6eb3c2"
+magenta = "#cc8292"
+cyan    = "#88b29e"
+white   = "#cfc6b8"

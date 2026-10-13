@@ -1,0 +1,18 @@
+# Terra (Hooky) - Theme configuration for Herdr
+# https://github.com/seren/hooky
+#
+# Drop these sections into ~/.config/herdr/config.toml to apply Terra colors.
+
+[theme]
+name = "terminal"
+
+[theme.custom]
+panel_bg = "#191716"
+sidebar_bg = "#141312"
+active_row_bg = "#3a3430"
+surface_dim = "#9b948a"
+selection_bg = "#3a3430"
+accent = "#e59458"
+
+[ui]
+accent = "#e59458"

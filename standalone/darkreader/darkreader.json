@@ -1,0 +1,32 @@
+{
+  "scheme": "terra",
+  "theme": {
+    "mode": 1,
+    "brightness": 100,
+    "contrast": 100,
+    "grayscale": 0,
+    "sepia": 5,
+    "useFont": false,
+    "fontFamily": "",
+    "textStroke": 0,
+    "engine": "dynamicTheme",
+    "stylesheet": "",
+    "darkSchemeBackgroundColor": "#191716",
+    "darkSchemeTextColor": "#cfc6b8",
+    "darkSchemeSelectionColor": "#3a3430",
+    "lightSchemeBackgroundColor": "#cfc6b8",
+    "lightSchemeTextColor": "#191716",
+    "lightSchemeSelectionColor": "#3a3430",
+    "scrollbarColor": "#3a3430"
+  },
+  "customThemes": [
+    {
+      "url": ["*"],
+      "theme": {
+        "darkSchemeBackgroundColor": "#191716",
+        "darkSchemeTextColor": "#cfc6b8",
+        "darkSchemeSelectionColor": "#3a3430"
+      }
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+# Terra Hooky — Ergonomic Omarchy Quattro shell treatment
+# Adheres to physiological dark mode floor and stepped +0.035 z-index elevation.
+
+[bar]
+background       = "#191716"
+background-alpha = 1.0
+text             = "#cfc6b8"
+active           = "#dc7468"
+scale-with-font  = true
+size-horizontal  = 26
+size-vertical    = 28
+
+[hyprland]
+active-border            = "#e59458"
+active-border-foreground = "#cfc6b8"
+active-border-width      = 2
+
+[controls]
+normal-color        = "#cfc6b8"
+normal-fill-alpha   = 0.05
+normal-border       = "#9b948a"
+normal-border-width = 1
+normal-border-alpha = 0.35
+
+hover-cursor-color        = "#cfc6b8"
+hover-cursor-fill-alpha   = 0.10
+hover-cursor-border       = "#e59458"
+hover-cursor-border-width = 1
+hover-cursor-border-alpha = 0.60
+
+focus-color        = "#cfc6b8"
+focus-fill-alpha   = 0.12
+focus-border       = "#e59458"
+focus-border-width = 1
+focus-border-alpha = 1.0
+
+selected-color        = "#cfc6b8"
+selected-fill-alpha   = 0.20
+selected-border       = "#e59458"
+selected-border-width = 1
+selected-border-alpha = 1.0
+
+pressed-fill-alpha   = 0.24
+selection-fill-alpha = 0.35
+
+[spacing]
+scale           = 1.0
+scale-with-font = true
+
+[font]
+base-size = 12
+
+[popups]
+background       = "#221f1d"
+background-alpha = 0.98
+text             = "#cfc6b8"
+border           = "#e59458"
+border-alpha     = 0.85
+border-width     = 2
+
+[tooltip]
+background       = "#221f1d"
+background-alpha = 0.98
+text             = "#cfc6b8"
+border           = "#9b948a"
+border-alpha     = 0.60
+border-width     = 1
+
+[notifications]
+background       = "#221f1d"
+background-alpha = 0.98
+text             = "#cfc6b8"
+border           = "#e59458"
+border-alpha     = 0.85
+border-width     = 2
+countdown        = "#e59458"
+
+[launcher]
+background                = "#221f1d"
+background-alpha          = 0.98
+text                      = "#cfc6b8"
+border                    = "#e59458"
+border-alpha              = 0.85
+border-width              = 2
+scrim                     = "#141312"
+scrim-alpha               = 0.65
+selected-background       = "#3a3430"
+selected-background-alpha = 0.90
+selected-text             = "#e59458"
+selected-border           = "#e59458"
+selected-border-alpha     = 0.80
+selected-border-width     = 1
+
+[menu]
+background                = "#221f1d"
+background-alpha          = 0.98
+text                      = "#cfc6b8"
+border                    = "#e59458"
+border-alpha              = 0.85
+border-width              = 2
+scrim                     = "#141312"
+scrim-alpha               = 0.65
+selected-background       = "#3a3430"
+selected-background-alpha = 0.90
+selected-text             = "#e59458"
+selected-border           = "#e59458"
+selected-border-alpha     = 0.80
+selected-border-width     = 1
+
+[polkit]
+background       = "#221f1d"
+background-alpha = 0.98
+text             = "#cfc6b8"
+text-error       = "#dc7468"
+border           = "#e59458"
+border-error     = "#dc7468"
+border-alpha     = 0.90
+border-width     = 2
+scrim            = "#141312"
+scrim-alpha      = 0.70
+accent           = "#e59458"
+
+[lock]
+background       = "#221f1d"
+background-alpha = 0.95
+text             = "#cfc6b8"
+placeholder      = "#9b948a"
+text-error       = "#dc7468"
+border           = "#9b948a"
+border-active    = "#e59458"
+border-error     = "#dc7468"
+border-alpha     = 0.90
+border-width     = 2
+selection        = "#e59458"
+selection-alpha  = 0.45
+
+[image-picker]
+scrim                   = "#141312"
+scrim-alpha             = 0.70
+text                    = "#cfc6b8"
+selected-border         = "#e59458"
+selected-border-alpha   = 1.0
+selected-border-width   = 2
+unselected-border       = "#9b948a"
+unselected-border-alpha = 0.60
+unselected-border-width = 1
