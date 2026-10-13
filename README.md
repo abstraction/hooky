@@ -66,7 +66,7 @@ All values verified via `scripts/verify-colors.py`:
 Run the automated installer:
 
 ```bash
-git clone https://github.com/seren/hooky.git
+git clone https://github.com/abstraction/hooky.git
 cd hooky
 ./scripts/install.sh
 ```

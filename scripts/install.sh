@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # install.sh — Production Installer for Hooky Ergonomic Theme
-# https://github.com/seren/hooky
+# https://github.com/abstraction/hooky
 #
 # Operations:
 # 1. Installs canonical theme package to ~/.config/omarchy/themes/hooky/

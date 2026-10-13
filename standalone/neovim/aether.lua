@@ -1,5 +1,5 @@
 -- Hooky - Neovim theme using aether.nvim
--- https://github.com/seren/hooky
+-- https://github.com/abstraction/hooky
 --
 -- For LazyVim / lazy.nvim: save to ~/.config/nvim/lua/plugins/theme.lua
 

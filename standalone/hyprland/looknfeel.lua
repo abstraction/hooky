@@ -1,5 +1,5 @@
 -- Hooky - Hyprland Lua Configuration (Hyprland 0.56+)
--- https://github.com/seren/hooky
+-- https://github.com/abstraction/hooky
 --
 -- Merge into ~/.config/hypr/looknfeel.lua
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # uninstall.sh — Clean Rollback Script for Hooky Theme
-# https://github.com/seren/hooky
+# https://github.com/abstraction/hooky
 #
 # Operations:
 # 1. Removes ~/.config/omarchy/themes/hooky/

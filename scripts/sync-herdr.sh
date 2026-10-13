@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # sync-herdr.sh — Sync Omarchy / Hooky theme colors into Herdr config
-# https://github.com/seren/hooky
+# https://github.com/abstraction/hooky
 #
 # Can be run directly or placed into ~/.config/omarchy/hooks/theme-set.d/herdr.sh
 # ==============================================================================

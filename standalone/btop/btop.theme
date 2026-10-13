@@ -1,5 +1,5 @@
 # Hooky - Ergonomic Theme for btop
-# https://github.com/seren/hooky
+# https://github.com/abstraction/hooky
 
 # Main background, empty for terminal default, need to be empty if you want transparent background
 theme[main_bg]="#191716"

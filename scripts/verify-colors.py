@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 verify-colors.py — Ergonomic & Colorimetric Verification Engine for Hooky
-https://github.com/seren/hooky
+https://github.com/abstraction/hooky
 
 Grounded in:
 Advanced-Ergonomic-Color-Systems-and-Dynamic-Theming-Architecture-for-Omarchy-Li.md
