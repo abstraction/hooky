@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-verify-colors.py — Ergonomic & Colorimetric Verification Engine for Terra (Hooky)
+verify-colors.py — Ergonomic & Colorimetric Verification Engine for Hooky
 https://github.com/seren/hooky
 
 Grounded in:
@@ -351,7 +351,7 @@ def evaluate_guardrails(colors: Dict[str, str]) -> List[Tuple[str, bool, str]]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Verify Terra theme colorimetric guardrails")
+    parser = argparse.ArgumentParser(description="Verify Hooky theme colorimetric guardrails")
     parser.add_argument("--file", "-f", help="Path to colors.toml to analyze", default=None)
     parser.add_argument("--json", action="store_true", help="Output machine-readable JSON results")
     parser.add_argument("--verbose", "-v", action="store_true", help="Print extended color matrix")
@@ -362,6 +362,7 @@ def main() -> int:
     if not target_path:
         default_candidates = [
             os.path.join(os.path.dirname(__file__), "..", "theme", "colors.toml"),
+            os.path.expanduser("~/.config/omarchy/themes/hooky/colors.toml"),
             os.path.expanduser("~/.config/omarchy/themes/terra/colors.toml"),
             os.path.expanduser("~/.local/state/omarchy/current/theme/colors.toml"),
         ]
@@ -419,7 +420,7 @@ def main() -> int:
     dim = "\033[2m"
     reset = "\033[0m"
 
-    print(f"\n{bold}{amber}Terra (Hooky) Colorimetric Verification Engine{reset}")
+    print(f"\n{bold}{amber}Hooky Colorimetric Verification Engine{reset}")
     print(f"{dim}Inspecting:{reset} {os.path.abspath(target_path)}\n")
 
     print(f"{bold}{'Token':<24} {'Hex':<9} {'OKLCH (L, C, H)':<24} {'APCA Lc':<9} {'WCAG 2.1':<8}{reset}")

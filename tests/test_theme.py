@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test_theme.py — Automated verification test suite for Terra (Hooky) theme.
+test_theme.py — Automated verification test suite for Hooky theme.
 Tests color guardrails, script plumbing, standalone config syntax, and error handling.
 """
 
@@ -160,7 +160,7 @@ class TestStandaloneConfigs(unittest.TestCase):
 
     def test_json_files(self):
         json_files = [
-            os.path.join(STANDALONE_DIR, "vscode", "terra-theme.json"),
+            os.path.join(STANDALONE_DIR, "vscode", "hooky-theme.json"),
             os.path.join(STANDALONE_DIR, "darkreader", "darkreader.json"),
             os.path.join(STANDALONE_DIR, "browser", "palette.json"),
         ]
@@ -171,7 +171,7 @@ class TestStandaloneConfigs(unittest.TestCase):
 
     def test_lua_syntax(self):
         lua_files = [
-            os.path.join(STANDALONE_DIR, "neovim", "terra.lua"),
+            os.path.join(STANDALONE_DIR, "neovim", "hooky.lua"),
             os.path.join(STANDALONE_DIR, "neovim", "aether.lua"),
             os.path.join(STANDALONE_DIR, "hyprland", "looknfeel.lua"),
         ]

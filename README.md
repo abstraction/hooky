@@ -1,4 +1,4 @@
-# Terra (Hooky)
+# Hooky
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Color Space: OKLCH](https://img.shields.io/badge/Color_Space-OKLCH-blue.svg)](https://bottosson.github.io/posts/oklab/)
@@ -8,7 +8,7 @@ An ergonomic, low-strain color system and desktop theme engineered for extreme-d
 
 Grounded in optical biophysics, the [Advanced Ergonomic Color Systems Research Paper](Advanced-Ergonomic-Color-Systems-and-Dynamic-Theming-Architecture-for-Omarchy-Li.md), and modern perceptual contrast science (OKLCH, APCA-W3 v0.98G).
 
-![Terra Preview](theme/preview.png)
+![Hooky Preview](theme/preview.png)
 
 ---
 
@@ -18,17 +18,17 @@ Standard "dark mode" implementations typically invert RGB values or use `#000000
 
 ### A. The Halation Effect & Pupil Dilation
 - **Mechanism**: In a pure black (`#000000`) field, the human pupil dilates to maximize photon intake. Dilated pupils suffer greater optical aberrations. High-luminance white glyphs scatter photons across the retina, causing the text to bleed, glow, or appear blurred (halation). For the ~33% of developers with mild astigmatism, this induces constant ciliary muscle micro-spasms attempting to focus blurred edges.
-- **Terra Solution**: Establishes an OKLCH Lightness floor of **$L = 0.207$** (`#191716`), eliminating pupillary over-dilation while preserving low-light comfort.
+- **Hooky Solution**: Establishes an OKLCH Lightness floor of **$L = 0.207$** (`#191716`), eliminating pupillary over-dilation while preserving low-light comfort.
 
 ### B. Longitudinal Chromatic Aberration (LCA) & Focus Lag
 - **Mechanism**: The eye's natural lens cannot focus all light wavelengths simultaneously. Saturated blue light ($H = 240^\circ - 270^\circ$) refracts sharply and focuses *in front* of the retina, causing an accommodative focusing error of **0.61 Diopters** (clinical autorefractor baseline). Staring at saturated blue syntax keeps the eye in continuous defocus. Conversely, warm red/amber wavelengths focus near the retina with only **0.18 Diopters** of lag.
-- **Terra Solution**:
+- **Hooky Solution**:
   1. Primary UI accents prioritize warm terracotta amber (`#e59458`, $H = 55.9^\circ$) to exploit the 0.18 D focus minimum.
   2. Blue accents are desaturated into slate spruce cyan (`#6eb3c2`, $H = 213.1^\circ, C = 0.073 < 0.10$), completely neutralizing accommodative defocus.
 
 ### C. APCA Perceptual Contrast vs. WCAG 2.1
 - **Mechanism**: WCAG 2.1 uses a symmetric relative luminance formula that penalizes dark mode and forces text luminance excessively high, aggravating halation.
-- **Terra Solution**: Evaluated using the **Advanced Perceptual Contrast Algorithm (APCA-W3 v0.98G)**. Primary foreground text (`#cfc6b8`) achieves **$Lc = 69.6$** clamped (**$74.5$** nominal), providing crisp letterform clarity for 13–15px monospace fonts without retinal glare.
+- **Hooky Solution**: Evaluated using the **Advanced Perceptual Contrast Algorithm (APCA-W3 v0.98G)**. Primary foreground text (`#cfc6b8`) achieves **$Lc = 69.6$** clamped (**$74.5$** nominal), providing crisp letterform clarity for 13–15px monospace fonts without retinal glare.
 
 ### D. Glare Neutralization & Shadow-Free Elevation
 - **Selection Glare**: `bright_foreground` is strictly mapped to `foreground` (`#cfc6b8`), eliminating blinding white flashes during cursor movements and block selections.
@@ -72,10 +72,10 @@ cd hooky
 ```
 
 The installer performs four automated actions:
-1. Copies the theme package into `~/.config/omarchy/themes/terra/`.
+1. Copies the theme package into `~/.config/omarchy/themes/hooky/`.
 2. Installs the Herdr theme-set synchronization hook to `~/.config/omarchy/hooks/theme-set.d/herdr.sh`.
 3. Verifies Kitty configuration and enables `text_composition_strategy platform`.
-4. Executes `omarchy theme set terra`.
+4. Executes `omarchy theme set hooky`.
 
 ### Rollback / Uninstall
 
@@ -92,9 +92,9 @@ To remove the theme cleanly:
 If you are not using Omarchy Linux, standalone configurations for individual applications are located in `standalone/`:
 
 ### Kitty
-Copy `standalone/kitty/kitty.conf` to `~/.config/kitty/terra.conf` and include it:
+Copy `standalone/kitty/kitty.conf` to `~/.config/kitty/hooky.conf` and include it:
 ```conf
-include terra.conf
+include hooky.conf
 ```
 *Crucial*: Keep `text_composition_strategy platform` enabled in Kitty.
 
@@ -119,9 +119,9 @@ config-file = path/to/hooky/standalone/ghostty/ghostty.conf
 
 ### Neovim
 Two integration options are provided:
-1. **Standalone Colorscheme**: Copy `standalone/neovim/terra.lua` to `~/.config/nvim/colors/terra.lua`. In `init.lua`:
+1. **Standalone Colorscheme**: Copy `standalone/neovim/hooky.lua` to `~/.config/nvim/colors/hooky.lua`. In `init.lua`:
    ```lua
-   vim.cmd.colorscheme("terra")
+   vim.cmd.colorscheme("hooky")
    ```
 2. **Aether.nvim Integration**: Use `standalone/neovim/aether.lua` in your LazyVim / lazy.nvim plugin configuration.
 
@@ -144,14 +144,14 @@ source-file path/to/hooky/standalone/tmux/tmux.conf
 Append `standalone/herdr/herdr.toml` into `~/.config/herdr/config.toml`, or deploy `scripts/sync-herdr.sh` to update colors automatically.
 
 ### Btop
-Copy `standalone/btop/btop.theme` to `~/.config/btop/themes/terra.theme` and select `terra` in Btop options (`ESC` -> Options -> Color theme).
+Copy `standalone/btop/btop.theme` to `~/.config/btop/themes/hooky.theme` and select `hooky` in Btop options (`ESC` -> Options -> Color theme).
 
 ### Obsidian
 Add `standalone/obsidian/obsidian.css` as a CSS snippet under your vault:
-`.obsidian/snippets/terra.css`, then enable it in Settings -> Appearance -> CSS snippets.
+`.obsidian/snippets/hooky.css`, then enable it in Settings -> Appearance -> CSS snippets.
 
 ### VS Code / VSCodium
-Place `standalone/vscode/terra-theme.json` in your custom extensions folder or load it via theme loader extensions.
+Place `standalone/vscode/hooky-theme.json` in your custom extensions folder or load it via theme loader extensions.
 
 ### Dark Reader
 Import `standalone/darkreader/darkreader.json` in the Dark Reader extension settings (Developer Tools -> Import).
@@ -172,7 +172,7 @@ In dark mode, Kitty's default setting `text_composition_strategy legacy` applies
 ### Mesopic Lighting & Indian Tubelight Environments
 High-Kelvin fluorescent lighting (6500K tubelights common in South Asia) paired with high ambient illumination causes contrast-adaptation fatigue if screen backgrounds are too dark. For late-morning sessions under strong tubelights:
 - Keep monitor brightness at ~120–140 nits.
-- Terra's $L = 0.207$ base provides sufficient black body to prevent washed-out text without triggering pupillary dilation.
+- Hooky's $L = 0.207$ base provides sufficient black body to prevent washed-out text without triggering pupillary dilation.
 - In low-lux night environments (<10 lux), bias lighting (warm 2700K lamp behind the monitor) is recommended to maintain the ISO 9241-303 3:1 luminance ratio.
 
 ---

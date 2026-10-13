@@ -1,7 +1,7 @@
-# Terra (Hooky) - Theme configuration for Herdr
+# Hooky - Theme configuration for Herdr
 # https://github.com/seren/hooky
 #
-# Drop these sections into ~/.config/herdr/config.toml to apply Terra colors.
+# Drop these sections into ~/.config/herdr/config.toml to apply Hooky colors.
 
 [theme]
 name = "terminal"

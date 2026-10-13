@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# sync-herdr.sh — Sync Omarchy / Terra theme colors into Herdr config
+# sync-herdr.sh — Sync Omarchy / Hooky theme colors into Herdr config
 # https://github.com/seren/hooky
 #
 # Can be run directly or placed into ~/.config/omarchy/hooks/theme-set.d/herdr.sh
@@ -15,7 +15,7 @@ if [[ ! -f "$HERDR_CONFIG" ]]; then
   exit 0
 fi
 
-# Resolve color values via omarchy-theme-color if available, otherwise use Terra defaults
+# Resolve color values via omarchy-theme-color if available, otherwise use Hooky defaults
 get_color() {
   local key="$1"
   local fallback="$2"

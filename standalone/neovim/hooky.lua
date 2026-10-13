@@ -1,8 +1,7 @@
--- Terra (Hooky) - Standalone Neovim Colorscheme
--- https://github.com/seren/hooky
+-- Hooky - Standalone Neovim Colorscheme
 --
--- Put this file in ~/.config/nvim/colors/terra.lua
--- and add `vim.cmd.colorscheme("terra")` in your init.lua.
+-- Put this file in ~/.config/nvim/colors/hooky.lua
+-- and add `vim.cmd.colorscheme("hooky")` in your init.lua.
 
 local colors = {
   bg         = "#191716",
@@ -33,7 +32,7 @@ if vim.fn.exists("syntax_on") == 1 then
   vim.cmd("syntax reset")
 end
 
-vim.g.colors_name = "terra"
+vim.g.colors_name = "hooky"
 vim.o.termguicolors = true
 vim.o.background = "dark"
 

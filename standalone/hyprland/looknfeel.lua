@@ -1,4 +1,4 @@
--- Terra (Hooky) - Hyprland Lua Configuration (Hyprland 0.56+)
+-- Hooky - Hyprland Lua Configuration (Hyprland 0.56+)
 -- https://github.com/seren/hooky
 --
 -- Merge into ~/.config/hypr/looknfeel.lua

@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# uninstall.sh — Clean Rollback Script for Terra (Hooky) Theme
+# uninstall.sh — Clean Rollback Script for Hooky Theme
 # https://github.com/seren/hooky
 #
 # Operations:
-# 1. Removes ~/.config/omarchy/themes/terra/
+# 1. Removes ~/.config/omarchy/themes/hooky/
 # 2. Removes ~/.config/omarchy/hooks/theme-set.d/herdr.sh
 # 3. Optionally switches to a fallback theme (default: 'Tokyo Night' or custom)
 # ==============================================================================
 
 set -euo pipefail
 
-TARGET_DIR="${OMARCHY_THEMES_PATH:-$HOME/.config/omarchy/themes}/terra"
+TARGET_DIR="${OMARCHY_THEMES_PATH:-$HOME/.config/omarchy/themes}/hooky"
 HOOK_FILE="${OMARCHY_HOOKS_PATH:-$HOME/.config/omarchy/hooks/theme-set.d}/herdr.sh"
 
 DRY_RUN=0
@@ -76,14 +76,14 @@ while (( $# > 0 )); do
   esac
 done
 
-echo -e "\n${BOLD}${AMBER}Uninstalling Terra (Hooky) Ergonomic Theme${RESET}\n"
+echo -e "\n${BOLD}${AMBER}Uninstalling Hooky Ergonomic Theme${RESET}\n"
 
-# Check if Terra is currently the active theme
+# Check if Hooky is currently the active theme
 CURRENT_THEME_FILE="$HOME/.local/state/omarchy/current/theme.name"
 if [[ -f "$CURRENT_THEME_FILE" ]]; then
   ACTIVE_THEME=$(cat "$CURRENT_THEME_FILE" 2>/dev/null || true)
-  if [[ "$ACTIVE_THEME" == "terra" && -z "$FALLBACK_THEME" ]]; then
-    log_warn "Terra is currently the active desktop theme."
+  if [[ "$ACTIVE_THEME" == "hooky" && -z "$FALLBACK_THEME" ]]; then
+    log_warn "Hooky is currently the active desktop theme."
     log_warn "Recommend passing --fallback <theme> (e.g. --fallback tokyo-night) to prevent an unstyled desktop."
   fi
 fi
@@ -91,7 +91,7 @@ fi
 # Interactive confirmation when not forced and not dry-run
 if (( ! FORCE && ! DRY_RUN )); then
   if [[ -t 0 ]]; then
-    read -r -p "Are you sure you want to uninstall Terra theme and hooks? [y/N] " confirm
+    read -r -p "Are you sure you want to uninstall Hooky theme and hooks? [y/N] " confirm
     case "$confirm" in
       [yY][eE][sS]|[yY]) ;;
       *)

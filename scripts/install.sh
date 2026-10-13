@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# install.sh — Production Installer for Terra (Hooky) Ergonomic Theme
+# install.sh — Production Installer for Hooky Ergonomic Theme
 # https://github.com/seren/hooky
 #
 # Operations:
-# 1. Installs canonical theme package to ~/.config/omarchy/themes/terra/
+# 1. Installs canonical theme package to ~/.config/omarchy/themes/hooky/
 # 2. Deploys Herdr dynamic theming hook to ~/.config/omarchy/hooks/theme-set.d/herdr.sh
 # 3. Validates and patches Kitty font compositing (text_composition_strategy platform)
-# 4. Compiles and activates theme via omarchy theme set terra
+# 4. Compiles and activates theme via omarchy theme set hooky
 # ==============================================================================
 
 set -euo pipefail
@@ -16,7 +16,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 THEME_SRC="$REPO_DIR/theme"
-TARGET_DIR="${OMARCHY_THEMES_PATH:-$HOME/.config/omarchy/themes}/terra"
+TARGET_DIR="${OMARCHY_THEMES_PATH:-$HOME/.config/omarchy/themes}/hooky"
 HOOKS_DIR="${OMARCHY_HOOKS_PATH:-$HOME/.config/omarchy/hooks/theme-set.d}"
 KITTY_CONF="${KITTY_CONF:-$HOME/.config/kitty/kitty.conf}"
 
@@ -76,7 +76,7 @@ while (( $# > 0 )); do
   esac
 done
 
-echo -e "\n${BOLD}${AMBER}Installing Terra (Hooky) Ergonomic Theme${RESET}"
+echo -e "\n${BOLD}${AMBER}Installing Hooky Ergonomic Theme${RESET}"
 echo -e "${DIM}Repository: $REPO_DIR${RESET}\n"
 
 # ------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ install_theme_package() {
     exit 1
   fi
 
-  log_info "Installing Terra theme package to $TARGET_DIR..."
+  log_info "Installing Hooky theme package to $TARGET_DIR..."
   if (( DRY_RUN )); then
     log_info "[DRY-RUN] Would create $TARGET_DIR and copy theme files"
     return 0
@@ -194,18 +194,18 @@ activate_theme() {
 
   if ! command -v omarchy >/dev/null 2>&1; then
     log_warn "'omarchy' binary not found on PATH. Manual activation required:"
-    echo "  omarchy theme set terra"
+    echo "  omarchy theme set hooky"
     return 0
   fi
 
-  log_info "Activating theme via 'omarchy theme set terra'..."
+  log_info "Activating theme via 'omarchy theme set hooky'..."
   if (( DRY_RUN )); then
-    log_info "[DRY-RUN] Would run: omarchy theme set terra"
+    log_info "[DRY-RUN] Would run: omarchy theme set hooky"
     return 0
   fi
 
-  omarchy theme set terra
-  log_ok "Theme successfully set to Terra."
+  omarchy theme set hooky
+  log_ok "Theme successfully set to Hooky."
 }
 
 # Run pipeline
